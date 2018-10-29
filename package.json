@@ -1,0 +1,35 @@
+{
+  "name": "api-gateway-nodejs",
+  "version": "1.0.0",
+  "description": "RESTful API for Tunas Gateway using Node.js",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sangianpatrick/api-tunas-gateway-nodejs.git"
+  },
+  "keywords": [
+    "tunasridean"
+  ],
+  "author": "Patrick Maurits Sangian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sangianpatrick/api-tunas-gateway-nodejs/issues"
+  },
+  "homepage": "https://github.com/sangianpatrick/api-tunas-gateway-nodejs#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "faker": "^4.1.0",
+    "jsonwebtoken": "^8.3.0",
+    "morgan": "^1.9.1",
+    "sequelize": "^4.41.0",
+    "tedious": "^3.0.1"
+  }
+}
