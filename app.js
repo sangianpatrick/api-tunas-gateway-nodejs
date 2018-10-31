@@ -19,7 +19,25 @@ app.use(cors())
 
 // begin apps
 app.use('/',index)
+app.use('*', (req, res) => {
+    res.status(404).json({message: 'not found' });
+});
 
+//send error type and message
+app.use((error, req, res, next) => {
+    var message = ''
+    res.status(error.status || 500)
+    if (res.statusCode == 500) {
+        message = 'Something went wrong.'
+    }else{
+        message = Object.values(error.errors).map(e => e.message) 
+    }
+    res.json({
+        error: {
+            message: error
+        }
+    })
+})
 
 
 app.listen(process.env.PORT, () => {
