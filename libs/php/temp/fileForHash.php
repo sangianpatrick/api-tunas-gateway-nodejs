@@ -1,0 +1,1 @@
+<?php require_once 'D:\nodejs\api-gateway-nodejs\libs\php\encryption\Encrypt.php'; echo Encrypt::encode('asdfasdfasdf');

@@ -13,13 +13,15 @@ const authorize = function(){
                         { 
                             model: UserGroup, as: "groups",
                         },
-                        // {
-                        //     model: UserApplication, as: "applications"
-                        // }
+                        {
+                            model: UserApplication, as: "applications"
+                        }
                     ],
                     where: {user_id: decoded.user}
                 })
                 .then((userdata) => {
+                    // req.user = JSON.parse(userdata)
+                    // console.log(userdata.applications)
                     req.user = userdata
                 })
                 .catch((error) => {

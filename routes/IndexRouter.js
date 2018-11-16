@@ -4,12 +4,19 @@ const example = require('../controllers/example/SsoController')
 //<-- or
 const { getUsers, signIn } = require('../controllers/example/SsoController')
 
+//additional router
+// const auth = require('./AuthRouter')
+const sso = require('./sso/InitRouter')
+
 index.get('/', (req, res) => {
     res.status(200).json({
         success: true,
         message: 'connected to application'
     })
 });
+
+// index.use('/auth', auth)
+index.use('/sso', sso)
 
 index.get('/example', example.getUsers )
 index.get('/example2/users', authorize(), getUsers)

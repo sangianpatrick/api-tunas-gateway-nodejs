@@ -1,8 +1,10 @@
 const axios = require('axios')
 const { User,UserGroup } = require('../../models/example/SsoModel')
 
+require('dotenv').config() //<-- access app environment (.env)
+
 const signIn = (req, res, next) => {
-    axios.post('http://192.168.200.110:88/v6/public/api/sso.php', {
+    axios.post(process.env.SIGNIN_URL, {
         username: req.body.username,
         password: req.body.password
     },{
@@ -21,23 +23,42 @@ const signIn = (req, res, next) => {
     })
 }
 
-const getUsers = (req, res, next) => {
+function groupChecking(groups){
+    return new Promise((resolve, reject) => {
+        var isOnGroup = groups.find(function(group){
+            if(group == 169){
+                resolve(true)
+            }else{
+                reject(new Error('Not listed in group'))
+            }
+        })
+    })
+}
+
+const getUsers = (req, res, next) => { 
     User.findAll()
-        .then((result) => {
-            // var check_group = req.user.groups.find(function(data) { 
-            //     if(data == 1){
-            //         return true
-            //     }
-            //     return false
-            // })
-            res.status(200).json({
-                success: true,
-                is_group: req.user,
+        .then(async (result) => {
+            let message;
+            try{
+                var isOnGroup = await groupChecking(req.user.groups)
+                message = 'list of user'
+                res.status(200)
+            }catch(error){
+                console.log(error.message)
+                var isOnGroup = false
+                result = undefined
+                message = 'request is forbidden'
+                res.status(403)
+            }
+            res.json({
+                success: isOnGroup,
+                message: message,
                 users: result
             })
+            
         })
         .catch((error) => {
-            console.log(error)
+            console.error(error)
         })
 }
 

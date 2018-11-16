@@ -4,6 +4,7 @@
   "description": "RESTful API for Tunas Gateway using Node.js",
   "main": "app.js",
   "scripts": {
+    "dev": ".\\node_modules\\nodemon\\bin\\nodemon.js App.js",
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,7 +15,7 @@
   "keywords": [
     "tunasridean"
   ],
-  "author": "Patrick Maurits Sangian",
+  "author": "Patrick Maurits Sangian <patricksangian@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sangianpatrick/api-tunas-gateway-nodejs/issues"
@@ -25,11 +26,15 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "dotenv": "^6.1.0",
+    "exec": "^0.2.1",
     "express": "^4.16.4",
     "faker": "^4.1.0",
     "jsonwebtoken": "^8.3.0",
     "morgan": "^1.9.1",
     "sequelize": "^4.41.0",
     "tedious": "^3.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.6"
   }
 }
