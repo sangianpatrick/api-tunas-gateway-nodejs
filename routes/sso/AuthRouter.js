@@ -1,15 +1,9 @@
-const auth = require('express').Router()
+const AuthRouter = require('express').Router()
 
-auth.post('/signin', (req, res) => {
-    res.status(200).json({
-        message: 'on sso/signin'
-    })
-})
+//load controller
+const { SignIn, SignOut, GetProfile } = require('../../controllers/AuthController')
 
-auth.get('/signout', (req, res) => {
-    res.status(200).json({
-        message: 'on sso/signout'
-    })
-})
+AuthRouter.post('/signin', SignIn)
+AuthRouter.get('/signout', SignOut)
 
-module.exports = auth
+module.exports = AuthRouter

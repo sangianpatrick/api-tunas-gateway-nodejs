@@ -3,7 +3,7 @@ const app = express()
 var cors = require('cors')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
-const { index } = require('./routes/IndexRouter')
+const { IndexRouter } = require('./routes/IndexRouter')
 
 require('dotenv').config() //<-- access app environment (.env)
 
@@ -18,7 +18,7 @@ app.use(cors())
 // <-- need to add request acception handler
 
 // begin apps
-app.use('/',index)
+app.use('/',IndexRouter)
 app.use('*', (req, res) => {
     res.status(404).json({message: 'not found' });
 });
