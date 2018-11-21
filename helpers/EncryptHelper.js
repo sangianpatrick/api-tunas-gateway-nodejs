@@ -1,34 +1,37 @@
 const { execFile, spawn, execSync } = require('child_process');
 const fs = require('fs')
 
-function writePhpFile(password){
-    return new Promise((resolve, reject) => {
-        fs.writeFile('../libs/php/temp/fileForHash.php',
-            `<?php require_once 'D:\\nodejs\\api-gateway-nodejs\\libs\\php\\encryption\\Encrypt.php'; echo Encrypt::encode('${password}');`, function(error){
-                if(error){
-                    reject(error)
-                }
-                resolve()
-        })
-    })
+function getRandNumber(){
+    var random = Math.floor(Math.random() * Math.floor(9999))
+    return random.toString()
 }
-function phpEncryptExec(){
-    return new Promise((resolve, reject) => {
-        var hash = execSync(`php ../libs/php/temp/fileForHash.php`).toString()
-        // console.log(hash)
-        resolve(hash)
-    })
+function removeTempPhp(file){
+    setTimeout(()=>{
+        fs.unlinkSync(`./libs/php/temp/${file}`)
+    }, 1000)
 }
 
-const passwordHash = function(password, callback){
-    writePhpFile(password)
-        .then(() => {
-            phpEncryptExec().then((hash) => {
-                callback()
-            })
-        })
-        .catch(error => console.log(error))
-
+function encryptPassword(password){
+    
+    var file = 'fileForHash_' + getRandNumber() + '_.php'
+    console.log(file)
+    fs.writeFileSync(`./libs/php/temp/${file}`,
+            `<?php require_once 'D:\\nodejs\\api-gateway-nodejs\\libs\\php\\encryption\\Encrypt.php'; echo Encrypt::encode('${password}');`)
+    removeTempPhp(file)
+    return execSync(`php ./libs/php/temp/${file}`).toString()
+    
 }
 
-passwordHash('asdfasdfasdf')
+function decryptPassword(password){
+    var file = 'fileForUnhash_' + getRandNumber() + '_.php'
+    fs.writeFileSync(`./libs/php/temp/${file}`,
+            `<?php require_once 'D:\\nodejs\\api-gateway-nodejs\\libs\\php\\encryption\\Encrypt.php'; echo Encrypt::decode('${password}');`)
+    removeTempPhp(file)
+    return execSync(`php ./libs/php/temp/${file}`).toString()
+    
+}
+
+module.exports = {
+    encryptPassword,
+    decryptPassword
+}
