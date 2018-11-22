@@ -16,7 +16,7 @@ function encryptPassword(password){
     var file = 'fileForHash_' + getRandNumber() + '_.php'
     console.log(file)
     fs.writeFileSync(`./libs/php/temp/${file}`,
-            `<?php require_once 'D:\\nodejs\\api-gateway-nodejs\\libs\\php\\encryption\\Encrypt.php'; echo Encrypt::encode('${password}');`)
+            `<?php require_once '${__dirname}/../libs/php/encryption/Encrypt.php'; echo Encrypt::encode('${password}');`)
     removeTempPhp(file)
     return execSync(`php ./libs/php/temp/${file}`).toString()
     
@@ -25,7 +25,7 @@ function encryptPassword(password){
 function decryptPassword(password){
     var file = 'fileForUnhash_' + getRandNumber() + '_.php'
     fs.writeFileSync(`./libs/php/temp/${file}`,
-            `<?php require_once 'D:\\nodejs\\api-gateway-nodejs\\libs\\php\\encryption\\Encrypt.php'; echo Encrypt::decode('${password}');`)
+            `<?php require_once '${__dirname}/../libs/php/encryption/Encrypt.php'; echo Encrypt::decode('${password}');`)
     removeTempPhp(file)
     return execSync(`php ./libs/php/temp/${file}`).toString()
     

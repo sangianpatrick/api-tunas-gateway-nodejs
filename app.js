@@ -3,11 +3,14 @@ const app = express()
 var cors = require('cors')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+
 const { IndexRouter } = require('./routes/IndexRouter')
 
 require('dotenv').config() //<-- access app environment (.env)
 
 app.use(morgan('dev'))
+app.use(cookieParser())
 app.use(bodyParser.urlencoded({
     extended: false
 }))
