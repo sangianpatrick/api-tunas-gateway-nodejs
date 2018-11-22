@@ -1,10 +1,10 @@
 const AccountRouter = require('express').Router()
 
 // load controller
-const { GetProfile, ChangePassword, UpdateProfilePicture } = require('../../controllers/AccountController')
+const { GetProfile, ChangePassword, ChangeProfilePicture } = require('../../controllers/AccountController')
 
 AccountRouter.get('/', GetProfile)
 AccountRouter.patch('/', ChangePassword)
-AccountRouter.get('/profile-picture', UpdateProfilePicture)
+AccountRouter.patch('/profile-picture', ChangeProfilePicture)
 
 module.exports = AccountRouter

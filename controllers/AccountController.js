@@ -40,18 +40,20 @@ const GetProfile = (req, res, next) => {
 
 const ChangePassword = (req, res) => {
     res.status(200).json({
-        message: 'password changed'
+        message: 'password changed',
+        directory: __dirname
     })
 }
 
-const UpdateProfilePicture = (req, res) => {
-    res.stauts(200).json({
-        message: 'profile picture is updated'
+const ChangeProfilePicture = (req, res) => {
+    res.cookie('rememberme', '1',{expires: new Date(Date.now() + 900000), httpOnly: true})
+    res.status(200).json({
+        message: 'profile picture updated'
     })
 }
 
 module.exports = {
     GetProfile,
     ChangePassword,
-    UpdateProfilePicture
+    ChangeProfilePicture
 }
