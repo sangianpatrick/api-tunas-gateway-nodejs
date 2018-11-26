@@ -28,6 +28,7 @@ app.use('*', (req, res) => {
 
 //send error type and message
 app.use((error, req, res, next) => {
+    console.log(error)
     var message = ''
     res.status(error.status || 500)
     if (res.statusCode == 500) {

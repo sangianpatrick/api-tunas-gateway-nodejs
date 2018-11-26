@@ -13,7 +13,7 @@ const SignIn = (req, res, next) => {
 
 const SignOut = (req, res, next) => {
     res.status(200).json({
-        message: 'logged out'
+        message: decryptPassword(req.body.password)
     })
 }
 

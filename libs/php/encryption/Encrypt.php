@@ -1,5 +1,4 @@
 <?php
-
 class Encrypt {
 
     public static $skey = '7sh20xl';
