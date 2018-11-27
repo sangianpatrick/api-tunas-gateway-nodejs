@@ -46,7 +46,7 @@ const ChangePassword = (req, res) => {
 }
 
 const ChangeProfilePicture = (req, res) => {
-    res.cookie('rememberme', '1',{expires: new Date(Date.now() + 900000), httpOnly: true})
+    // res.cookie('rememberme', '1',{expires: new Date(Date.now() + 900000), httpOnly: true})
     res.status(200).json({
         message: 'profile picture updated'
     })

@@ -1,10 +1,11 @@
 const { bearerAuth } = require('../helpers/AuthHelpers')
-const { User,UserGroup,UserApplication  } = require('../models/example/SsoModel')
+const { FakeUser,UserGroup,UserApplication  } = require('../models/sso/FakeUserModel')
 
 const authorize = function(){
     console.log('authorizing request ...')
     return (req, res, next) => {
         bearerAuth(req, (error, decoded) => {
+            console.log('bea')
             if(error){
                 res.status(401).json({error})
             }else{
@@ -20,14 +21,12 @@ const authorize = function(){
                     where: {user_id: decoded.user}
                 })
                 .then((userdata) => {
-                    // req.user = JSON.parse(userdata)
-                    // console.log(userdata.applications)
                     req.user = userdata
                 })
                 .catch((error) => {
                     next(error)
                 })
-                
+                    
                 next()
             }
         })

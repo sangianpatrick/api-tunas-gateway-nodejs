@@ -9,12 +9,12 @@ const Sequelize = require('sequelize')
 
 // default connection
 const db = new Sequelize(
-    'GATEWAYV6', 
-    'SA',
-    'P@ssw0rd',
+    process.env.DB_SCHEMA, 
+    process.env.DB_USER,
+    process.env.DB_PASSWD,
     {
-        host: '192.168.110.213',
-        dialect: 'mssql',
+        host: process.env.DB_HOST,
+        dialect:  process.env.DB_DIALECT,
         operatorsAliases: false
     }
 )

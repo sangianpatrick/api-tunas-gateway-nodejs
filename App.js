@@ -5,12 +5,17 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
+//routes
 const { IndexRouter } = require('./routes/IndexRouter')
 
 require('dotenv').config() //<-- access app environment (.env)
 
+//load middleware
+// const { authorize  } = require('./middlewares/AuthMiddleware')
+
+
 app.use(morgan('dev'))
-app.use(cookieParser())
+// app.use(cookieParser())
 app.use(bodyParser.urlencoded({
     extended: false
 }))
@@ -21,26 +26,23 @@ app.use(cors())
 // <-- need to add request acception handler
 
 // begin apps
-app.use('/',IndexRouter)
+app.use('/', IndexRouter)
 app.use('*', (req, res) => {
     res.status(404).json({message: 'not found' });
 });
 
 //send error type and message
 app.use((error, req, res, next) => {
-    console.log(error)
-    var message = ''
-    res.status(error.status || 500)
-    if (res.statusCode == 500) {
-        message = 'Something went wrong.'
-    }else{
-        message = Object.values(error.errors).map(e => e.message) 
+    if (error.name == 'ValidationError') {
+        res.status(400)
+            .json({ 
+                message: Object.values(err.errors).map(e => e.message) 
+            })
     }
-    res.json({
-        error: {
-            message: error
-        }
-    })
+    else {
+        console.log(error)
+        res.status(500).json({ message: `oops! something went wrong` })
+    }
 })
 
 

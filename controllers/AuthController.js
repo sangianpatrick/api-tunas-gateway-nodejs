@@ -1,13 +1,20 @@
 const User = require('../models/sso/UserModel')
-const {encryptPassword,decryptPassword} = require('../helpers/EncryptHelper')
+const { genAuthToken } = require('../helpers/AuthHelpers')
 require('dotenv').config() //<-- access app environment (.env)
 
+//load models
+const FakeUser = require('../models/sso/FakeUserModel')
+
 const SignIn = (req, res, next) => {
-    res.status(200).json({
-        message: 'authenticated',
-        password: req.body.password,
-        encrypt: encryptPassword(req.body.password),
-        decrypt: decryptPassword(encryptPassword(req.body.password))
+    FakeUser.findByUserId(req.body.user_id)
+    .then((user) => {
+        if(user && user.validPassword(req.body.password)){
+            genAuthToken(user, req, res, next)
+        }else{
+            res.status(400).json({
+                message: 'incorrect user_id or password',
+            })
+        }
     })
 }
 

@@ -1,11 +1,10 @@
 const UserRouter = require('express').Router()
 const { authorize } = require('../../middlewares/AuthMiddleware')
 
-UserRouter.get('/', (req, res) => {
-    res.status(200).json({
-        message: `on sso/users "list of user users"`
-    })
-})
+//load controller
+const { GetUsers  }= require('../../controllers/sso/UserController')
+
+UserRouter.get('/', GetUsers)
 
 UserRouter.post('/', (req, res) => {
     res.status(200).json({
