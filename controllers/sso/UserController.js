@@ -4,62 +4,116 @@ require('dotenv').config()
 const FakeUser = require('../../models/sso/FakeUserModel')
 
 //module function
-function uriQueryValidator(req,res){
-    var validOrder = /[\w],(ASC|asc|DESC|desc)$/.test(req.query.order)
-    var validOfsset = /\d$/.test(req.query.offset)
-    var validLimit = /\d$/.test(req.query.limit)
+function validateUrlQuery(req){
+    var validOrder = /[\w],(ASC|asc|DESC|desc)$/.test(req.query.order||'user_id,asc')
+    var validOfsset = /\d$/.test(req.query.offset||0)
+    var validLimit = /\d$/.test(req.query.limit||10)
+    var error=[]
+    if(!validOrder){
+        error.push({
+            name: 'Invalid Order Query'
+        })
+    }
+    if(!validOfsset){
+        error.push({
+            name: 'Invalid Offset Query'
+        })
+    }
+    if(!validLimit){
+        error.push({
+            name: 'Invalid Limit Query'
+        })
+    }
+
+    var query = {
+        order: req.query.order||'user_id,asc',
+        offset: parseInt(req.query.offset) || 0,
+        limit: parseInt(req.query.limit)|| 10
+    }
+
+    return new Promise((resolve, reject) => {
+        if(error.length < 1){
+            console.log('error: '+error.length)
+            resolve(query)
+        }else{
+            console.log('error: asdfasdf')
+
+            reject(error)
+        }
+    })
+}
+
+function setPagination(query,counted){
+    var pages = Math.floor(counted/query.limit) + (counted % Math.floor(counted/query.limit) > 1?1:0)
+    var offset = 0
+    var pagination = []
+    for (let i = 1; i <= pages; i++) {
+        pagination.push({
+            page: i,
+            uri: `/sso/users?order=${query.order}&offset=${offset}&limit=${query.limit}`
+        })
+        offset += query.limit
+        
+    }
+
+    return pagination
+
+
 }
 
 //controller function
 const GetUsers = async (req, res, next) => {
-    if(!validOrder){
-        res.status(400).json({
-            message: `order in query string must be a column name and order type eg. ?order=test,asc`
+    
+    try {
+        var query = await validateUrlQuery(req)
+
+        order = query.order.split(',',2)
+
+        FakeUser.findAndCountAll({
+            attributes: {
+                exclude: ['create_user','create_date','update_user','update_date','user_pasword','user_password_salt','user_count_wrong_pass'] 
+            },
+            offset: query.offset, 
+            limit: query.limit,
+            order: [
+                order
+            ]
+        })
+        .then((result) => {
+            var users = []
+            result.rows.forEach((row, i) => {
+                users.push({
+                    user_id: row.user_id,
+                    user_emp_id: row.user_emp_id,
+                    user_fullname: row.user_fullname,
+                    user_email: row.user_email,
+                    access_link:{
+                        uri: `/sso/users/${row.user_emp_id}`,
+                        method: ['GET','PATCH','DELETE'],
+                        authorize: true
+                    } 
+                })
+            })
+            res.status(200)
+                .json({
+                    query: req.query,
+                    count: result.count,
+                    pages: setPagination(query,result.count),
+                    create_link: {
+                        uri: `/sso/users`,
+                        method: ['POST'],
+                        authorize: true
+                    },
+                    users: users
+                })
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(400)
+        .json({
+            error_on_validation: error
         })
     }
-
-    // const {offset,limit, order} = req.query
-
-    // var order = order?order.split(',',2):['user_id','asc']
-    // var counted_user = await FakeUser.count()
-
-
-    // FakeUser.findAndCountAll({
-    //     offset: offset || 0, 
-    //     limit: limit || 10,
-    //     order: [
-    //         [order[0],order[1]]
-    //     ]
-    // })
-    // .then((result) => {
-    //     res.status(200)
-    //         .json({
-    //             counted_user: result.rows.length,
-    //             order_by: order,
-    //             user: result.rows
-                
-    //         })
-    // })
-    // .catch((error) => { next(error) })
-
-    
-    // FakeUser.(req.query.user)
-    // .then((user) => {
-    //     res.status(200)
-    //     .json({
-    //         user: user
-    //     })
-    // })
-    // .catch((error) =>next(error))
-
-    // res.status(200)
-    // .json({
-    //     data: Object.keys(req.body)
-    // })
-
-    // res.status(200).json({
-    //     message: 'ok'
-    // })
 }
 
 module.exports = {

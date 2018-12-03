@@ -73,7 +73,7 @@ FakeUser.prototype.validPassword = function(password){
     return this.user_password == hashString(password, this.user_password_salt)
 }
 
-// association
+//Model association
 FakeUser.hasMany(UserGroup, {as: 'groups',foreignKey: 'user_id', sourceKey: 'user_id'})
 FakeUser.hasMany(UserApplication, {as: 'applications',foreignKey: 'user_id', sourceKey: 'user_id'})
 UserGroup.belongsTo(FakeUser, {as: 'users',foreignKey: 'user_id', targetKey: 'user_id'})
