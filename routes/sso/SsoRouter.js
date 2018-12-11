@@ -8,6 +8,6 @@ const AuthRouter = require('./AuthRouter')
 const UserRouter = require('./UserRouter')
 
 SsoRouter.use('/auth', AuthRouter)
-SsoRouter.use('/users', UserRouter)
+SsoRouter.use('/users',authorize(), UserRouter)
 
 module.exports = SsoRouter

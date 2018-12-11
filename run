@@ -1,2 +1,0 @@
-docker build -t patrick/u14-node8-php55-tunasapi .
-docker run --rm -p 5007:5007 patrick/u14-node8-php55-tunasapi

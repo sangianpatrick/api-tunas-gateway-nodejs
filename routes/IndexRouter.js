@@ -1,3 +1,10 @@
+/**
+ * IndexRouter
+ * Contains all router to particular endpoint
+ * First router that will be accessed
+ */
+
+ //load package/middleware/helper
 const IndexRouter = require('express').Router()
 const { authorize } = require('../middlewares/AuthMiddleware')
 
@@ -17,7 +24,7 @@ IndexRouter.get('/', (req, res) => {
     })
 });
 IndexRouter.use('/sso', SsoRouter)
-IndexRouter.use('/account', AccountRouter)
+IndexRouter.use('/account',authorize(), AccountRouter)
 
 // IndexRouter.get('/example', example.getUsers )
 // IndexRouter.get('/example2/users', authorize(), getUsers)

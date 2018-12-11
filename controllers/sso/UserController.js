@@ -89,21 +89,15 @@ const GetUsers = async (req, res, next) => {
                     user_email: row.user_email,
                     access_link:{
                         uri: `/sso/users/${row.user_emp_id}`,
-                        method: ['GET','PATCH','DELETE'],
-                        authorize: true
+                        authorization: true
                     } 
                 })
             })
+            
             res.status(200)
                 .json({
-                    query: req.query,
                     count: result.count,
                     pages: setPagination(query,result.count),
-                    create_link: {
-                        uri: `/sso/users`,
-                        method: ['POST'],
-                        authorize: true
-                    },
                     users: users
                 })
         })
@@ -116,6 +110,23 @@ const GetUsers = async (req, res, next) => {
     }
 }
 
+const GetUserByEmployeeId = (req, res, next) => {
+    
+    FakeUser.findByEmployeeId(req.params.user_emp_id)
+        .then((user) => {
+            if(!user){
+                res.status(204).send()
+
+            }else{
+                res.status(200)
+                    .json(user)
+            }
+            
+        })
+        .catch(error => next(error))
+}
+
 module.exports = {
-    GetUsers
+    GetUsers,
+    GetUserByEmployeeId
 }

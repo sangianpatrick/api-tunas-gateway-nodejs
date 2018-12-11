@@ -1,1 +1,0 @@
-<?php require_once('../encryption/Encrypt.php'); echo Encrypt::encode('patrick');

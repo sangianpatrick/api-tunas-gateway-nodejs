@@ -2,9 +2,11 @@ const UserRouter = require('express').Router()
 const { authorize } = require('../../middlewares/AuthMiddleware')
 
 //load controller
-const { GetUsers  }= require('../../controllers/sso/UserController')
+const { GetUsers, GetUserByEmployeeId  }= require('../../controllers/sso/UserController')
 
 UserRouter.get('/', GetUsers)
+
+UserRouter.get('/:user_emp_id', GetUserByEmployeeId)
 
 UserRouter.post('/', (req, res) => {
     res.status(200).json({
@@ -12,11 +14,6 @@ UserRouter.post('/', (req, res) => {
     })
 })
 
-UserRouter.get('/:user_id', (req, res) => {
-    res.status(200).json({
-        message: `on sso/users "detail of user with id ${req.params.user_id}"`
-    })
-})
 
 UserRouter.patch('/:user_id', (req, res) => {
     res.status(200).json({
