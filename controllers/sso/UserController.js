@@ -115,7 +115,7 @@ const GetUserByEmployeeId = (req, res, next) => {
     FakeUser.findByEmployeeId(req.params.user_emp_id)
         .then((user) => {
             if(!user){
-                res.status(204).send()
+                next()
 
             }else{
                 res.status(200)

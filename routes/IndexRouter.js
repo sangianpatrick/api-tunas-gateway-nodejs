@@ -16,6 +16,7 @@ const { getUsers, signIn } = require('../controllers/example/SsoController')
 //additional router
 const SsoRouter = require('./sso/SsoRouter')
 const AccountRouter = require('./account/AccountRouter')
+const MasterRouter = require('./master/MasterRouter')
 
 IndexRouter.get('/', (req, res) => {
     res.status(200).json({
@@ -25,6 +26,7 @@ IndexRouter.get('/', (req, res) => {
 });
 IndexRouter.use('/sso', SsoRouter)
 IndexRouter.use('/account',authorize(), AccountRouter)
+IndexRouter.use('/master', authorize(), MasterRouter)
 
 // IndexRouter.get('/example', example.getUsers )
 // IndexRouter.get('/example2/users', authorize(), getUsers)

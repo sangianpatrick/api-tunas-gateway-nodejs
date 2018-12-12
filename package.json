@@ -2,7 +2,7 @@
   "name": "api-gateway-nodejs",
   "version": "1.0.0",
   "description": "RESTful API for Tunas Gateway using Node.js",
-  "main": "app.js",
+  "main": "App.js",
   "scripts": {
     "dev": "./node_modules/.bin/nodemon App.js",
     "start": "node app.js",

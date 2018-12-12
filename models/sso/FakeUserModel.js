@@ -80,23 +80,27 @@ FakeUser.findByUserId = function(user_id){
 FakeUser.findByEmployeeId = function(user_emp_id){
     return this.findOne({
         attributes: {
-            exclude: ['create_user','create_date','update_user','update_date','user_password','user_password_salt','user_count_wrong_pass'] 
+            exclude: ['create_user','create_date','update_user','update_date','user_password','user_password_salt','user_count_wrong_pass'] // <-- set as an unaccesible field
         },
         where: {
             user_emp_id: user_emp_id
         },
         include: [
             { 
-                model: UserGroup, as: "groups",
+                model: UserGroup, 
+                as: "groups",
                 attributes: {
                     exclude: ['create_user','create_date','update_user','update_date','user_id']
-                }
+                },
+                required: true
             },
             {
-                model: UserApplication, as: "applications",
+                model: UserApplication, 
+                as: "applications",
                 attributes: {
                     exclude: ['create_user','create_date','update_user','update_date','user_id']
-                }
+                },
+                required: true
             }
         ],
     })
@@ -106,7 +110,7 @@ FakeUser.getProfile = function(user_id){
 
     return this.findOne({
         attributes: {
-            exclude: ['create_user','create_date','update_user','update_date','user_password','user_password_salt','user_count_wrong_pass'] 
+            exclude: ['create_user','create_date','update_user','update_date','user_password','user_password_salt','user_count_wrong_pass'] // <-- set as an unaccesible field
         },
         where: {
             user_id: user_id

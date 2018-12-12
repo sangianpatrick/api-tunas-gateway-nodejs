@@ -1,3 +1,15 @@
+/**
+ * UserModel
+ * 
+ * contains properties, static & instance method
+ * with association model
+ * 
+ * ********* Use this model carefuly, it will affect the "sso_user" table.    ************
+ * ********* In case of using, please integrate the app with Testin Database. ************
+ * 
+ * Just uncomment the script below for use
+ */
+
 // const {
 //     Sequelize,
 //     db
@@ -7,7 +19,7 @@
 // const UserGroup = require('./UserGroupModel')
 // const UserApplication = require('./UserApplicationModel')
 
-// //model
+// //model properties
 // const User = db.define('sso_user', {
 //     user_id: {
 //         type: Sequelize.STRING,
